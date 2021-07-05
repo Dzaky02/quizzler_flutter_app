@@ -33,25 +33,6 @@ class QuizPage extends StatefulWidget {
 class _QuizPageState extends State<QuizPage> {
   List<Icon> scoreKeeper = [];
 
-  int questionNumber = 0;
-  static const trueValue = Icon(
-    Icons.check,
-    color: Colors.green,
-  );
-  static const falseValue = Icon(
-    Icons.close,
-    color: Colors.red,
-  );
-
-  void answerQuestion(bool result) {
-    if (questionNumber < quizBrain.questionBank.length) {
-      setState(() {
-        scoreKeeper.add(result ? trueValue : falseValue);
-        questionNumber++;
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -64,9 +45,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                questionNumber < quizBrain.questionBank.length
-                    ? quizBrain.questionBank[questionNumber].questionText
-                    : 'Finish',
+                quizBrain.getQuestion(),
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 25.0,
@@ -86,7 +65,7 @@ class _QuizPageState extends State<QuizPage> {
                 style: TextStyle(fontSize: 20.0),
               ),
               onPressed: () =>
-                  answerQuestion(quizBrain.questionBank[questionNumber].questionAnswer),
+                  scoreKeeper.add(quizBrain.nextQuestion(quizBrain.getAnswer())),
             ),
           ),
         ),
@@ -100,7 +79,7 @@ class _QuizPageState extends State<QuizPage> {
                 style: TextStyle(fontSize: 20.0),
               ),
               onPressed: () =>
-                  answerQuestion(!quizBrain.questionBank[questionNumber].questionAnswer),
+                  scoreKeeper.add(quizBrain.nextQuestion(!quizBrain.getAnswer())),
             ),
           ),
         ),

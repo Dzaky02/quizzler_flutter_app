@@ -1,7 +1,20 @@
+import 'package:flutter/material.dart';
+
 import '../models/question.dart';
 
 class QuizBrain {
-  List<Question> questionBank = [
+
+  int _questionNumber = 0;
+  static const _trueValue = Icon(
+    Icons.check,
+    color: Colors.green,
+  );
+  static const _falseValue = Icon(
+    Icons.close,
+    color: Colors.red,
+  );
+
+  List<Question> _questionBank = [
     Question('Some cats are actually allergic to humans', true),
     Question('You can lead a cow down stairs but not up stairs.', false),
     Question('Approximately one quarter of human bones are in the feet.', true),
@@ -28,4 +41,15 @@ class QuizBrain {
         'In West Virginia, USA, if you accidentally hit an animal with your car, you are free to take it home to eat.',
         true),
   ];
+
+  Icon nextQuestion(bool result) {
+    if (_questionNumber < _questionBank.length - 1) {
+        _questionNumber++;
+    }
+    return result ? _trueValue : _falseValue;
+  }
+
+  String getQuestion() => _questionBank[_questionNumber].questionText;
+
+  bool getAnswer() => _questionBank[_questionNumber].questionAnswer;
 }
