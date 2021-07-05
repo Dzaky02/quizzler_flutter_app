@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quizzler_flutter_app/models/question.dart';
 
 void main() => runApp(Quizzler());
 
@@ -30,13 +31,20 @@ class QuizPage extends StatefulWidget {
 class _QuizPageState extends State<QuizPage> {
   List<Icon> scoreKeeper = [];
 
-  List<String> questions = [
-    'You can lead a cow down stairs but not up stairs.',
-    'Approximately one quarter of human bones are in the feet.',
-    'A slug\'s blood is green.',
+  List<Question> questions = [
+    Question(
+      questionText: 'You can lead a cow down stairs but not up stairs.',
+      questionAnswer: false,
+    ),
+    Question(
+      questionText: 'Approximately one quarter of human bones are in the feet.',
+      questionAnswer: true,
+    ),
+    Question(
+      questionText: 'A slug\'s blood is green.',
+      questionAnswer: true,
+    ),
   ];
-
-  List<bool> answers = [false, true, true];
 
   int questionNumber = 0;
   static const trueValue = Icon(
@@ -69,7 +77,9 @@ class _QuizPageState extends State<QuizPage> {
             padding: EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                questionNumber < questions.length ? questions[questionNumber] : 'Finish',
+                questionNumber < questions.length
+                    ? questions[questionNumber].questionText
+                    : 'Finish',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 25.0,
@@ -88,7 +98,8 @@ class _QuizPageState extends State<QuizPage> {
                 'True',
                 style: TextStyle(fontSize: 20.0),
               ),
-              onPressed: () => answerQuestion(answers[questionNumber]),
+              onPressed: () =>
+                  answerQuestion(questions[questionNumber].questionAnswer),
             ),
           ),
         ),
@@ -101,7 +112,8 @@ class _QuizPageState extends State<QuizPage> {
                 'False',
                 style: TextStyle(fontSize: 20.0),
               ),
-              onPressed: () => answerQuestion(!answers[questionNumber]),
+              onPressed: () =>
+                  answerQuestion(!questions[questionNumber].questionAnswer),
             ),
           ),
         ),
