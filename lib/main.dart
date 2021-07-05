@@ -64,8 +64,15 @@ class _QuizPageState extends State<QuizPage> {
                 'True',
                 style: TextStyle(fontSize: 20.0),
               ),
-              onPressed: () =>
-                  scoreKeeper.add(quizBrain.nextQuestion(quizBrain.getAnswer())),
+              onPressed: () {
+                setState(() {
+                  scoreKeeper.add(
+                    quizBrain.nextQuestion(
+                      quizBrain.getAnswer(),
+                    ),
+                  );
+                });
+              },
             ),
           ),
         ),
@@ -78,8 +85,15 @@ class _QuizPageState extends State<QuizPage> {
                 'False',
                 style: TextStyle(fontSize: 20.0),
               ),
-              onPressed: () =>
-                  scoreKeeper.add(quizBrain.nextQuestion(!quizBrain.getAnswer())),
+              onPressed: () {
+                setState(() {
+                  scoreKeeper.add(
+                    quizBrain.nextQuestion(
+                      !quizBrain.getAnswer(),
+                    ),
+                  );
+                });
+              },
             ),
           ),
         ),
