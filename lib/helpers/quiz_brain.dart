@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import '../models/question.dart';
 
 class QuizBrain {
-
   int _questionNumber = 0;
+  int _totalScores = 0;
+
   static const _trueValue = Icon(
     Icons.check,
     color: Colors.green,
   );
+
   static const _falseValue = Icon(
     Icons.close,
     color: Colors.red,
@@ -43,13 +45,23 @@ class QuizBrain {
   ];
 
   Icon nextQuestion(bool result) {
-    if (_questionNumber < _questionBank.length - 1) {
-        _questionNumber++;
-    }
+    _questionNumber++;
+    if (result) _totalScores++;
     return result ? _trueValue : _falseValue;
   }
 
-  String getQuestion() => _questionBank[_questionNumber].questionText;
+  String getQuestion() => (_questionNumber < _questionBank.length - 1)
+      ? _questionBank[_questionNumber].questionText
+      : 'Finished';
 
   bool getAnswer() => _questionBank[_questionNumber].questionAnswer;
+
+  String getFinalScore() => '$_totalScores / ${_questionBank.length}';
+
+  bool isFinished() => _questionNumber == _questionBank.length;
+
+  void reset() {
+    _questionNumber = 0;
+    _totalScores = 0;
+  }
 }

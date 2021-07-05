@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import '/helpers/quiz_brain.dart';
 
 QuizBrain quizBrain = QuizBrain();
@@ -33,6 +34,25 @@ class QuizPage extends StatefulWidget {
 class _QuizPageState extends State<QuizPage> {
   List<Icon> scoreKeeper = [];
 
+  void checkAnswer(bool answer) {
+    setState(() {
+      if (quizBrain.isFinished()) {
+        Alert(
+          context: context,
+          title: 'Finished!',
+          desc: 'You\'ve reached the end of the quiz. You\'re score :\n${quizBrain.getFinalScore()}',
+        ).show();
+
+        quizBrain.reset();
+        scoreKeeper = [];
+      } else {
+        scoreKeeper.add(
+          quizBrain.nextQuestion(quizBrain.getAnswer() == answer),
+        );
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -64,15 +84,7 @@ class _QuizPageState extends State<QuizPage> {
                 'True',
                 style: TextStyle(fontSize: 20.0),
               ),
-              onPressed: () {
-                setState(() {
-                  scoreKeeper.add(
-                    quizBrain.nextQuestion(
-                      quizBrain.getAnswer(),
-                    ),
-                  );
-                });
-              },
+              onPressed: () => checkAnswer(true),
             ),
           ),
         ),
@@ -85,20 +97,11 @@ class _QuizPageState extends State<QuizPage> {
                 'False',
                 style: TextStyle(fontSize: 20.0),
               ),
-              onPressed: () {
-                setState(() {
-                  scoreKeeper.add(
-                    quizBrain.nextQuestion(
-                      !quizBrain.getAnswer(),
-                    ),
-                  );
-                });
-              },
+              onPressed: () => checkAnswer(false),
             ),
           ),
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+        Wrap(
           children: scoreKeeper,
         ),
       ],
